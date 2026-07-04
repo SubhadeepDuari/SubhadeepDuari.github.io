@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Subhadeep Duari — Computational Biology · IIIT-Delhi</title>
+<meta name="description" content="Subhadeep Duari — Senior Research Fellow in Computational Biology at IIIT-Delhi. Machine learning for cells, nuclei, aging, and ion-channel biophysics." />
+<meta property="og:title" content="Subhadeep Duari — Computational Biology" />
+<meta property="og:description" content="Interpretable machine-learning models that read cells, nuclei, and molecules — tied back to the wet lab." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#FAFAFB;
+    --surface:#FFFFFF;
+    --surface-2:#F4F5F7;
+    --ink:#12151C;
+    --muted:#565F6E;
+    --faint:#8B94A3;
+    --line:#E7E9EE;
+    --line-strong:#D6DAE1;
+    --accent:#147F76;      /* viridis teal, deepened for contrast */
+    --accent-ink:#0C5A53;
+    --accent-2:#3B528B;    /* viridis blue */
+    --accent-wash:#E7F2F0;
+    /* viridis stops */
+    --v1:#440154; --v2:#414487; --v3:#2A788E; --v4:#22A884; --v5:#7AD151; --v6:#FDE725;
+    --maxw:1120px;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+    font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  h1,h2,h3{font-family:"Space Grotesk",sans-serif;font-weight:600;letter-spacing:-.02em;line-height:1.05;margin:0}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--accent);color:#fff}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+
+  /* ---------- eyebrow (python-comment nod) ---------- */
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.08em;
+    color:var(--accent);text-transform:none;margin:0 0 18px;font-weight:500;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .eyebrow::before{content:"#";color:var(--faint)}
+
+  /* ---------- nav ---------- */
+  header.nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(250,250,251,.82);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:11px;font-family:"Space Grotesk";font-weight:600;letter-spacing:-.01em}
+  .mono-mark{
+    width:34px;height:34px;border-radius:9px;display:grid;place-items:center;
+    background:var(--ink);color:#fff;font-family:"IBM Plex Mono";font-size:13px;font-weight:500;letter-spacing:.02em;
+  }
+  .brand small{display:block;font-family:"IBM Plex Mono";font-size:10.5px;color:var(--faint);letter-spacing:.04em;font-weight:400;margin-top:1px}
+  nav.links{display:flex;align-items:center;gap:4px}
+  nav.links a{
+    font-size:14.5px;color:var(--muted);padding:8px 13px;border-radius:8px;transition:color .18s,background .18s;
+  }
+  nav.links a:hover{color:var(--ink);background:var(--surface-2)}
+  nav.links a.cv{color:var(--accent);border:1px solid var(--line-strong);margin-left:6px}
+  nav.links a.cv:hover{background:var(--accent-wash);border-color:var(--accent)}
+  .burger{display:none;background:none;border:1px solid var(--line-strong);border-radius:9px;width:42px;height:42px;cursor:pointer}
+  .burger span{display:block;width:17px;height:1.6px;background:var(--ink);margin:4px auto;transition:.25s}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;overflow:hidden}
+  #embed{position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:.85}
+  .hero::after{ /* readability fade over the embedding, left-heavy */
+    content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:
+      linear-gradient(105deg, var(--bg) 26%, rgba(250,250,251,.72) 48%, rgba(250,250,251,0) 74%),
+      linear-gradient(0deg, var(--bg), rgba(250,250,251,0) 22%);
+  }
+  .hero-in{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center;
+    padding:78px 0 86px;min-height:min(84vh,760px)}
+  .hero h1{font-size:clamp(44px,7vw,86px);font-weight:700;letter-spacing:-.035em}
+  .hero .role{font-size:clamp(17px,2.1vw,21px);color:var(--ink);margin:20px 0 4px;font-weight:500;font-family:"Space Grotesk"}
+  .hero .affil{font-family:"IBM Plex Mono";font-size:13.5px;color:var(--muted);letter-spacing:.01em}
+  .hero .thesis{font-size:clamp(17px,2vw,19.5px);color:var(--muted);max-width:34ch;margin:26px 0 34px;line-height:1.55}
+  .hero .thesis b{color:var(--ink);font-weight:600}
+  .cta-row{display:flex;flex-wrap:wrap;gap:11px}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:500;padding:11px 17px;border-radius:10px;
+    border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);transition:.18s var(--ease);cursor:pointer}
+  .btn:hover{border-color:var(--accent);color:var(--accent-ink);transform:translateY(-1px)}
+  .btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .btn.primary:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn svg{width:16px;height:16px;stroke-width:1.7}
+
+  /* portrait card */
+  .portrait{position:relative;justify-self:end;width:min(100%,400px)}
+  .portrait .frame{
+    position:relative;border-radius:18px;overflow:hidden;background:var(--surface);
+    border:1px solid var(--line);box-shadow:0 18px 50px -24px rgba(18,21,28,.28);
+  }
+  .portrait img{display:block;width:100%;height:auto}
+  .portrait .spectrum{height:5px;width:100%;
+    background:linear-gradient(90deg,var(--v1),var(--v2),var(--v3),var(--v4),var(--v5),var(--v6))}
+  .portrait .cap{
+    display:flex;justify-content:space-between;align-items:center;gap:10px;
+    padding:11px 15px;font-family:"IBM Plex Mono";font-size:11px;color:var(--faint);letter-spacing:.02em;
+    border-top:1px solid var(--line)}
+  .portrait .cap .live{display:inline-flex;align-items:center;gap:6px;color:var(--accent)}
+  .portrait .cap .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);
+    box-shadow:0 0 0 0 rgba(20,127,118,.5);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(20,127,118,.45)}70%{box-shadow:0 0 0 7px rgba(20,127,118,0)}100%{box-shadow:0 0 0 0 rgba(20,127,118,0)}}
+
+  /* ---------- section shell ---------- */
+  section{padding:96px 0;border-top:1px solid var(--line)}
+  .sec-head{max-width:60ch;margin-bottom:44px}
+  .sec-head h2{font-size:clamp(26px,3.4vw,38px);margin-bottom:14px}
+  .sec-head p{color:var(--muted);font-size:17px;margin:0}
+
+  /* ---------- about ---------- */
+  .about-grid{display:grid;grid-template-columns:1.35fr .9fr;gap:56px;align-items:start}
+  .about-body p{color:var(--muted);margin:0 0 18px;max-width:60ch}
+  .about-body p b{color:var(--ink);font-weight:600}
+  .glance{border:1px solid var(--line);border-radius:16px;background:var(--surface);overflow:hidden}
+  .glance dl{margin:0}
+  .glance .row{display:grid;grid-template-columns:1fr;gap:2px;padding:15px 20px;border-bottom:1px solid var(--line)}
+  .glance .row:last-child{border-bottom:0}
+  .glance dt{font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.06em;color:var(--faint);text-transform:uppercase}
+  .glance dd{margin:0;font-size:15px;color:var(--ink);font-weight:500}
+  .glance dd span{color:var(--muted);font-weight:400}
+
+  /* ---------- research cards ---------- */
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .card{position:relative;border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:26px 26px 28px;
+    transition:.22s var(--ease)}
+  .card:hover{border-color:var(--line-strong);transform:translateY(-3px);box-shadow:0 20px 44px -30px rgba(18,21,28,.35)}
+  .card .idx{font-family:"IBM Plex Mono";font-size:11.5px;color:var(--accent);letter-spacing:.05em}
+  .card h3{font-size:20px;margin:14px 0 10px;letter-spacing:-.015em}
+  .card p{margin:0;color:var(--muted);font-size:15.5px;line-height:1.55}
+  .card .tags{margin-top:16px;display:flex;flex-wrap:wrap;gap:7px}
+  .tag{font-family:"IBM Plex Mono";font-size:11px;color:var(--muted);background:var(--surface-2);
+    border:1px solid var(--line);border-radius:6px;padding:3px 8px;letter-spacing:.01em}
+  .card .bar{position:absolute;left:0;top:26px;bottom:26px;width:3px;border-radius:3px;background:var(--accent)}
+  .card:nth-child(1) .bar{background:var(--v3)}
+  .card:nth-child(2) .bar{background:var(--v4)}
+  .card:nth-child(3) .bar{background:var(--v2)}
+  .card:nth-child(4) .bar{background:var(--v5)}
+  .card{padding-left:30px}
+
+  /* ---------- timeline ---------- */
+  .timeline{display:grid;grid-template-columns:repeat(2,1fr);gap:48px}
+  .tl-col h3.subhead{font-family:"IBM Plex Mono";font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--faint);margin-bottom:22px}
+  .tl-item{position:relative;padding-left:26px;padding-bottom:26px;border-left:1px solid var(--line);margin-left:4px}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-item::before{content:"";position:absolute;left:-5px;top:5px;width:9px;height:9px;border-radius:50%;
+    background:var(--surface);border:2px solid var(--accent)}
+  .tl-item .yr{font-family:"IBM Plex Mono";font-size:12px;color:var(--accent);letter-spacing:.02em}
+  .tl-item .ti{font-weight:600;font-size:16px;margin:3px 0 2px;font-family:"Space Grotesk"}
+  .tl-item .pl{color:var(--muted);font-size:14.5px}
+  .tl-item .no{color:var(--faint);font-size:13.5px;margin-top:4px}
+
+  /* ---------- publications ---------- */
+  .pub-controls{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-bottom:28px}
+  .filters{display:inline-flex;background:var(--surface-2);border:1px solid var(--line);border-radius:11px;padding:4px}
+  .filters button{border:0;background:none;font-family:"IBM Plex Sans";font-size:14px;color:var(--muted);
+    padding:7px 15px;border-radius:8px;cursor:pointer;transition:.16s;font-weight:500}
+  .filters button.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(18,21,28,.08)}
+  .filters button .n{font-family:"IBM Plex Mono";font-size:11px;color:var(--faint);margin-left:6px}
+  .search{position:relative}
+  .search input{font-family:"IBM Plex Sans";font-size:14.5px;padding:10px 14px 10px 38px;border:1px solid var(--line-strong);
+    border-radius:10px;background:var(--surface);width:250px;color:var(--ink);transition:.18s}
+  .search input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
+  .search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:var(--faint)}
+
+  .pub-list{border-top:1px solid var(--line)}
+  .pub{display:grid;grid-template-columns:38px 1fr auto;gap:20px;align-items:start;
+    padding:24px 8px;border-bottom:1px solid var(--line);transition:background .18s}
+  .pub:hover{background:var(--surface)}
+  .pub .num{font-family:"IBM Plex Mono";font-size:13px;color:var(--faint);padding-top:3px}
+  .pub .ti{font-size:18px;font-weight:600;font-family:"Space Grotesk";letter-spacing:-.015em;line-height:1.28;margin:0 0 8px}
+  .pub .ti a{background-image:linear-gradient(var(--accent),var(--accent));background-size:0% 1.5px;
+    background-repeat:no-repeat;background-position:0 100%;transition:background-size .3s}
+  .pub .ti a:hover{background-size:100% 1.5px;color:var(--accent-ink)}
+  .pub .au{font-size:14.5px;color:var(--muted);line-height:1.5}
+  .pub .au b{color:var(--ink);font-weight:600}
+  .pub .venue{margin-top:9px;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+  .pub .vn{font-weight:600;font-size:14px;color:var(--ink)}
+  .pub .vm{font-family:"IBM Plex Mono";font-size:12.5px;color:var(--faint)}
+  .pub .co{font-family:"IBM Plex Mono";font-size:11px;color:var(--accent)}
+  .badge{font-family:"IBM Plex Mono";font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+    padding:4px 9px;border-radius:20px;white-space:nowrap;align-self:start;margin-top:2px}
+  .badge.journal{background:var(--accent-wash);color:var(--accent-ink);border:1px solid #C7E4DF}
+  .badge.preprint{background:#F1EEF7;color:#5A4B84;border:1px solid #E1D9F0}
+  .pub-empty{padding:44px 8px;color:var(--faint);font-family:"IBM Plex Mono";font-size:14px}
+
+  /* ---------- skills ---------- */
+  .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .skillset{border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:24px}
+  .skillset h3{font-size:14px;font-family:"IBM Plex Mono";font-weight:500;letter-spacing:.04em;color:var(--faint);
+    text-transform:uppercase;margin-bottom:16px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-size:13.5px;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);
+    border-radius:8px;padding:6px 11px}
+  .chip.key{border-color:var(--accent);color:var(--accent-ink);background:var(--accent-wash)}
+
+  /* ---------- awards ---------- */
+  .awards{display:grid;gap:0}
+  .award{display:grid;grid-template-columns:80px 1fr;gap:22px;padding:20px 4px;border-bottom:1px solid var(--line);align-items:baseline}
+  .award:last-child{border-bottom:0}
+  .award .yr{font-family:"IBM Plex Mono";font-size:14px;color:var(--accent)}
+  .award .d{color:var(--ink);font-size:16px}
+  .award .d span{color:var(--muted);font-size:14px}
+
+  /* ---------- contact / footer ---------- */
+  .contact{background:var(--ink);color:#EDEFF3;border-top:0}
+  .contact .eyebrow{color:#6FD8CD}
+  .contact .eyebrow::before{color:#5C6472}
+  .contact h2{color:#fff;font-size:clamp(28px,4vw,44px);max-width:20ch}
+  .contact p{color:#AEB6C4;max-width:52ch;margin:18px 0 32px}
+  .contact-links{display:flex;flex-wrap:wrap;gap:12px}
+  .contact-links a{display:inline-flex;align-items:center;gap:9px;font-size:15px;padding:12px 18px;border-radius:11px;
+    border:1px solid #2C3444;color:#EDEFF3;transition:.18s var(--ease)}
+  .contact-links a:hover{background:#1B2130;border-color:#48536B;transform:translateY(-1px)}
+  .contact-links a svg{width:17px;height:17px;stroke-width:1.6}
+  .contact-links a.mail{background:var(--accent);border-color:var(--accent);color:#fff}
+  .contact-links a.mail:hover{background:#16938a}
+  footer.foot{background:var(--ink);color:#7A8398;padding:28px 0;border-top:1px solid #232A38}
+  .foot-in{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-family:"IBM Plex Mono";font-size:12.5px}
+  .foot-in a:hover{color:#AEB6C4}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:900px){
+    .hero-in{grid-template-columns:1fr;gap:40px;padding:52px 0 60px;text-align:left}
+    .portrait{justify-self:start;width:min(78%,340px);order:-1}
+    .about-grid{grid-template-columns:1fr;gap:36px}
+    .cards,.skills-grid{grid-template-columns:1fr}
+    .timeline{grid-template-columns:1fr;gap:38px}
+    nav.links{display:none;position:absolute;top:64px;left:0;right:0;background:var(--surface);
+      border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;gap:0;padding:8px}
+    nav.links.open{display:flex}
+    nav.links a{padding:13px 14px;border-radius:8px}
+    nav.links a.cv{margin:6px 0 0;text-align:center}
+    .burger{display:block}
+    section{padding:64px 0}
+    .skills-grid{gap:16px}
+  }
+  @media(max-width:560px){
+    .wrap{padding:0 20px}
+    .pub{grid-template-columns:1fr;gap:10px}
+    .pub .num{display:none}
+    .pub .badge{order:-1;justify-self:start}
+    .award{grid-template-columns:64px 1fr;gap:14px}
+    .pub-controls{gap:12px}
+    .search input{width:100%}
+    .search{width:100%}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{scroll-behavior:auto!important}
+    .reveal{opacity:1;transform:none;transition:none}
+    .dot{animation:none}
+  }
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top">
+      <span class="mono-mark">SD</span>
+      <span>Subhadeep Duari<small>Computational Biology · IIIT-D</small></span>
+    </a>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <nav class="links" id="navlinks">
+      <a href="#about">About</a>
+      <a href="#research">Research</a>
+      <a href="#path">Path</a>
+      <a href="#publications">Publications</a>
+      <a href="#contact">Contact</a>
+      <a class="cv" href="Subhadeep_Duari_CV.pdf" target="_blank" rel="noopener">CV ↗</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<div class="hero" id="top">
+  <canvas id="embed" aria-hidden="true"></canvas>
+  <div class="wrap hero-in">
+    <div class="hero-text">
+      <p class="eyebrow">computational biologist · AI researcher</p>
+      <h1>Subhadeep<br>Duari</h1>
+      <p class="role">Senior Research Fellow, Computational Biology</p>
+      <p class="affil">Indraprastha Institute of Information Technology, Delhi</p>
+      <p class="thesis">I build <b>interpretable machine-learning models</b> that read cells, nuclei, and molecules — and tie them back to the wet lab.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="#publications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+          Publications
+        </a>
+        <a class="btn" href="mailto:subhadeepd@iiitd.ac.in">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          Email
+        </a>
+        <a class="btn" href="Subhadeep_Duari_CV.pdf" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 3v5h5M14 3l5 5v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/></svg>
+          CV
+        </a>
+      </div>
+    </div>
+    <div class="portrait">
+      <div class="frame">
+        <div class="spectrum" aria-hidden="true"></div>
+        <picture>
+          <source srcset="profile.webp" type="image/webp" />
+          <img src="profile.jpg" alt="Portrait of Subhadeep Duari" width="900" height="1125" />
+        </picture>
+        <div class="cap">
+          <span>New Delhi, India</span>
+          <span class="live"><span class="dot"></span>IIIT-D · CompBio</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-body reveal">
+        <p class="eyebrow">about</p>
+        <h2 style="font-size:clamp(26px,3.4vw,38px);margin-bottom:22px">Biology, read through models.</h2>
+        <p>I'm a Senior Research Fellow in the Department of Computational Biology at <b>IIIT-Delhi</b>, working at the interface of machine learning and experimental biology. My work builds interpretable models that read biological images and molecular data — from <b>single-cell and nuclear morphology</b> to <b>cellular aging</b> and <b>ion-channel biophysics</b> — and connects those predictions back to wet-lab experiments.</p>
+        <p>I trained as a biologist through the BS-MS program at <b>IISER Bhopal</b>, with hands-on electrophysiology, molecular cloning, and fluorescence microscopy. These days most of my time is spent in <b>Python</b>, turning microscopy and omics data into predictive, mechanism-aware tools — including contributions to platforms like <b>scCamAge</b> and <b>AgeXtend</b>.</p>
+        <p>I care about models that a biologist can actually interrogate: where a prediction comes from, which features drive it, and how it maps onto real cellular processes.</p>
+      </div>
+      <aside class="glance reveal">
+        <dl>
+          <div class="row"><dt>Role</dt><dd>Senior Research Fellow</dd></div>
+          <div class="row"><dt>Affiliation</dt><dd>Computational Biology, <span>IIIT-Delhi</span></dd></div>
+          <div class="row"><dt>Education</dt><dd>BS-MS, Biological Sciences<span> · IISER Bhopal</span></dd></div>
+          <div class="row"><dt>Based in</dt><dd>New Delhi, <span>India</span></dd></div>
+          <div class="row"><dt>Works in</dt><dd>Python <span>· R · deep learning</span></dd></div>
+          <div class="row"><dt>Focus</dt><dd>ML for cells, nuclei &amp; aging</dd></div>
+        </dl>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESEARCH ============ -->
+<section id="research">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">research</p>
+      <h2>What I work on</h2>
+      <p>Four threads that keep meeting each other — imaging, aging, biophysics, and generative design for molecules.</p>
+    </div>
+    <div class="cards">
+      <div class="card reveal"><span class="bar"></span>
+        <span class="idx">01</span>
+        <h3>Computational pathology &amp; nuclear morphometry</h3>
+        <p>Interpretable representations of nuclei and cells from microscopy and H&amp;E tissue — turning morphology into quantitative descriptors for classification and discovery.</p>
+        <div class="tags"><span class="tag">image analysis</span><span class="tag">morphometrics</span><span class="tag">deep learning</span></div>
+      </div>
+      <div class="card reveal"><span class="bar"></span>
+        <span class="idx">02</span>
+        <h3>Aging biology &amp; geroprotector discovery</h3>
+        <p>Context-aware models of cellular age and aging-associated bioactivities across single cells, and explainable AI for surfacing candidate geroprotectors.</p>
+        <div class="tags"><span class="tag">scCamAge</span><span class="tag">AgeXtend</span><span class="tag">single-cell</span></div>
+      </div>
+      <div class="card reveal"><span class="bar"></span>
+        <span class="idx">03</span>
+        <h3>Ion-channel biophysics</h3>
+        <p>Mechanistic study of TRPV1 activation by the spider-venom double-knot toxin (DkTx), combining electrophysiology (TEVC) with biophysical modeling.</p>
+        <div class="tags"><span class="tag">TRPV1</span><span class="tag">electrophysiology</span><span class="tag">biophysics</span></div>
+      </div>
+      <div class="card reveal"><span class="bar"></span>
+        <span class="idx">04</span>
+        <h3>Generative AI for drug discovery</h3>
+        <p>Multimodal molecular representation learning and generative frameworks for protein degraders and mechanism-backed discovery of bioactive molecules.</p>
+        <div class="tags"><span class="tag">SynGlue</span><span class="tag">multimodal</span><span class="tag">representation learning</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PATH ============ -->
+<section id="path">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">path</p>
+      <h2>Where I've worked &amp; studied</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl-col reveal">
+        <h3 class="subhead">Experience</h3>
+        <div class="tl-item">
+          <div class="yr">2024 — present</div>
+          <div class="ti">Senior Research Fellow</div>
+          <div class="pl">Dept. of Computational Biology, IIIT-Delhi</div>
+        </div>
+        <div class="tl-item">
+          <div class="yr">2022 — 2024</div>
+          <div class="ti">Junior Research Fellow</div>
+          <div class="pl">Dept. of Computational Biology, IIIT-Delhi</div>
+          <div class="no">Deep-learning models for image-processing projects &amp; advanced image analysis.</div>
+        </div>
+        <div class="tl-item">
+          <div class="yr">2020 — 2021</div>
+          <div class="ti">Project Research Assistant</div>
+          <div class="pl">Biological Sciences, IISER Bhopal</div>
+          <div class="no">TRPV1 activation mechanism by double-knot toxin (DkTx).</div>
+        </div>
+        <div class="tl-item">
+          <div class="yr">2016</div>
+          <div class="ti">Summer Research Fellow</div>
+          <div class="pl">Dept. of Mathematics, IISc Bangalore</div>
+          <div class="no">Category theory.</div>
+        </div>
+      </div>
+      <div class="tl-col reveal">
+        <h3 class="subhead">Education &amp; teaching</h3>
+        <div class="tl-item">
+          <div class="yr">2015 — 2020</div>
+          <div class="ti">BS-MS, Biological Sciences</div>
+          <div class="pl">IISER Bhopal</div>
+        </div>
+        <div class="tl-item">
+          <div class="yr">2024</div>
+          <div class="ti">Teaching Assistant</div>
+          <div class="pl">Intro to Quantitative Biology · Genetics &amp; Molecular Biology</div>
+          <div class="no">IIIT-Delhi</div>
+        </div>
+        <div class="tl-item">
+          <div class="yr">2023</div>
+          <div class="ti">Teaching Assistant</div>
+          <div class="pl">Data Science in Genomics</div>
+          <div class="no">IIIT-Delhi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PUBLICATIONS ============ -->
+<section id="publications">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">publications</p>
+      <h2>Selected work</h2>
+      <p>Peer-reviewed articles and preprints. Titles link to Google Scholar.</p>
+    </div>
+    <div class="pub-controls reveal">
+      <div class="filters" role="tablist">
+        <button class="on" data-f="all">All <span class="n" id="n-all"></span></button>
+        <button data-f="journal">Journal <span class="n" id="n-journal"></span></button>
+        <button data-f="preprint">Preprint <span class="n" id="n-preprint"></span></button>
+      </div>
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="pubSearch" type="search" placeholder="Search title, author, venue…" aria-label="Search publications" />
+      </div>
+    </div>
+    <div class="pub-list" id="pubList"></div>
+  </div>
+</section>
+
+<!-- ============ SKILLS ============ -->
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">toolkit</p>
+      <h2>Dry lab, wet lab</h2>
+      <p>A computational core built on top of real bench experience.</p>
+    </div>
+    <div class="skills-grid">
+      <div class="skillset reveal">
+        <h3>Computational</h3>
+        <div class="chips">
+          <span class="chip key">Python</span><span class="chip key">R</span>
+          <span class="chip">Machine learning</span><span class="chip">Deep learning</span>
+          <span class="chip">Image analysis</span><span class="chip">Exploratory data analysis</span>
+        </div>
+      </div>
+      <div class="skillset reveal">
+        <h3>Experimental</h3>
+        <div class="chips">
+          <span class="chip">TEVC electrophysiology</span><span class="chip">Fluorescence microscopy</span>
+          <span class="chip">Spectrofluorometry</span><span class="chip">Molecular cloning</span>
+          <span class="chip">Recombinant protein production</span><span class="chip">HPLC</span>
+          <span class="chip">SDS-PAGE</span><span class="chip">DNA / RNA / plasmid isolation</span>
+          <span class="chip">Agarose gel electrophoresis</span>
+        </div>
+      </div>
+      <div class="skillset reveal">
+        <h3>Languages</h3>
+        <div class="chips">
+          <span class="chip">English</span><span class="chip">Bengali</span><span class="chip">Hindi</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AWARDS ============ -->
+<section id="awards">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">recognition</p>
+      <h2>Scholarships &amp; awards</h2>
+    </div>
+    <div class="awards reveal">
+      <div class="award"><span class="yr">2019</span><span class="d">CSIR-UGC Junior Research Fellowship <span>— All India Rank 139</span></span></div>
+      <div class="award"><span class="yr">2015</span><span class="d">DST-INSPIRE Scholarship <span>— MHRD, Govt. of India</span></span></div>
+      <div class="award"><span class="yr">2014</span><span class="d">Gold Medal, 21st National Child Science Congress <span>— DST, Govt. of India</span></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <p class="eyebrow">contact</p>
+    <h2>Let's talk science.</h2>
+    <p>Open to collaborations across computational pathology, aging biology, and ML-driven discovery — and always happy to chat about interpretable models for biology.</p>
+    <div class="contact-links">
+      <a class="mail" href="mailto:subhadeepd@iiitd.ac.in">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+        subhadeepd@iiitd.ac.in
+      </a>
+      <a href="https://scholar.google.com/scholar?q=Subhadeep+Duari" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3 1 9l11 6 9-4.9V17"/><path d="M5 12v4c0 1.5 3.1 3 7 3s7-1.5 7-3v-4"/></svg>
+        Google Scholar
+      </a>
+      <a href="https://github.com/" target="_blank" rel="noopener" data-edit="github">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12 12 0 0 0-6 0C6.7 2.6 5.6 2.9 5.6 2.9a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.3c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>
+        GitHub
+      </a>
+      <a href="https://www.linkedin.com/" target="_blank" rel="noopener" data-edit="linkedin">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/><path d="M10 9v12M10 14a4 4 0 0 1 8 0v7"/></svg>
+        LinkedIn
+      </a>
+      <a href="Subhadeep_Duari_CV.pdf" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 3v5h5M14 3l5 5v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/></svg>
+        Curriculum Vitae
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <span>© <span id="yr"></span> Subhadeep Duari</span>
+    <span>Built with HTML · CSS · JavaScript</span>
+  </div>
+</footer>
+
+<script>
+/* ===================== PUBLICATIONS DATA ===================== */
+const PUBS = [
+  { type:"preprint", year:2026,
+    title:"Cross-species aging knowledge integration into an agentic AI platform uncovers conserved mechanisms",
+    authors:"G. Ahuja, A. Sharma, A. Singh, S. Kedia, A. Sharma, V. Gautam, P. Sharma, A. Khandelwal, S. Ramakrishna, R. Muddashetty, et al.",
+    venue:"Preprint", meta:"IIIT-Delhi · 2026" },
+
+  { type:"journal", year:2025,
+    title:"Discovering geroprotectors through the explainable artificial intelligence-based platform AgeXtend",
+    authors:"S. Arora, A. Mittal, <b>S. Duari</b>, S. Chauhan, N. K. Dixit, S. K. Mohanty, A. Sharma, S. Solanki, A. K. Sharma, V. Gautam, et al.",
+    venue:"Nature Aging", meta:"5(1):144–161 · 2025" },
+
+  { type:"journal", year:2025, co:true,
+    title:"scCamAge: A context-aware prediction engine for cellular age, aging-associated bioactivities, and morphometrics",
+    authors:"V. Gautam, <b>S. Duari</b>, S. Solanki, M. Gupta, A. Mittal, S. Arora, A. Aggarwal, A. K. Sharma, S. Tyagi, R. K. Pankajbhai, et al.",
+    venue:"Cell Reports", meta:"44(2):115270 · 2025" },
+
+  { type:"journal", year:2025,
+    title:"Deep learning reveals endogenous sterols as allosteric modulators of the GPCR–Gα interface",
+    authors:"S. K. Mohanty, A. Mittal, N. Farooqi, A. Gaur, <b>S. Duari</b>, S. Solanki, A. K. Sharma, S. Arora, S. Kumar, V. Gautam, et al.",
+    venue:"eLife", meta:"14:RP106397 · 2025" },
+
+  { type:"journal", year:2025,
+    title:"Protocol for cellular age prediction in yeast and human single cells using transfer learning",
+    authors:"<b>S. Duari</b>, V. Gautam, G. Ahuja",
+    venue:"STAR Protocols", meta:"6(3) · 2025" },
+
+  { type:"preprint", year:2025,
+    title:"Chemical Dice Integrator (CDI): A scalable framework for multimodal molecular representation learning",
+    authors:"S. Kumar, S. Solanki, M. Gupta, S. K. Mohanty, S. Satija, S. Chauhan, <b>S. Duari</b>, A. Sharma, V. Gautam, S. Arora, et al.",
+    venue:"bioRxiv", meta:"2025" },
+
+  { type:"preprint", year:2025,
+    title:"Generative AI framework SynGlue for the rational design of clinically relevant protein degraders",
+    authors:"S. Solanki, S. K. Mohanty, S. Satija, S. Chauhan, N. V. M. R. Bandaru, S. Dukare, N. K. Tiwari, R. N. Kumar, A. B. Aravind, S. Mukherjee, et al.",
+    venue:"bioRxiv", meta:"2025" },
+
+  { type:"preprint", year:2025,
+    title:"MutAIverse: An AI-powered, mechanism-backed platform for discovering novel DNA adducts and their precursor genotoxins",
+    authors:"S. Satija, S. K. Mohanty, S. Jorvekar, A. Verma, S. Solanki, V. Gautam, S. Arora, A. Mittal, A. Sharma, S. Chauhan, et al.",
+    venue:"bioRxiv", meta:"2025" },
+
+  { type:"journal", year:2023,
+    title:"Dissecting the contributions of membrane affinity and bivalency of the spider venom protein DkTx to its sustained mode of TRPV1 activation",
+    authors:"Y. Singh, D. Sarkar, <b>S. Duari</b>, S. G., P. K. I. Guru, H. M. V., D. Singh, S. Bhardwaj, J. Kalia",
+    venue:"Journal of Biological Chemistry", meta:"299(7):104903 · 2023" }
+];
+
+/* ===================== RENDER + FILTER ===================== */
+const listEl = document.getElementById('pubList');
+let activeFilter = 'all', query = '';
+
+function scholar(t){ return 'https://scholar.google.com/scholar?q=' + encodeURIComponent(t); }
+
+function render(){
+  const q = query.trim().toLowerCase();
+  const rows = PUBS.filter(p=>{
+    const okType = activeFilter==='all' || p.type===activeFilter;
+    const hay = (p.title+' '+p.authors+' '+p.venue).toLowerCase();
+    return okType && (!q || hay.includes(q));
+  });
+  if(!rows.length){ listEl.innerHTML = '<div class="pub-empty">No publications match “'+query+'”.</div>'; return; }
+  listEl.innerHTML = rows.map((p,i)=>`
+    <article class="pub">
+      <div class="num">${String(i+1).padStart(2,'0')}</div>
+      <div class="pub-main">
+        <h3 class="ti"><a href="${scholar(p.title)}" target="_blank" rel="noopener">${p.title}</a></h3>
+        <div class="au">${p.authors}</div>
+        <div class="venue">
+          <span class="vn">${p.venue}</span>
+          <span class="vm">${p.meta}</span>
+          ${p.co?'<span class="co">◦ co-first author</span>':''}
+        </div>
+      </div>
+      <span class="badge ${p.type}">${p.type}</span>
+    </article>`).join('');
+}
+
+/* counts */
+document.getElementById('n-all').textContent = PUBS.length;
+document.getElementById('n-journal').textContent = PUBS.filter(p=>p.type==='journal').length;
+document.getElementById('n-preprint').textContent = PUBS.filter(p=>p.type==='preprint').length;
+
+document.querySelectorAll('.filters button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.filters button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); activeFilter=b.dataset.f; render();
+  });
+});
+document.getElementById('pubSearch').addEventListener('input',e=>{ query=e.target.value; render(); });
+render();
+
+/* ===================== NAV (mobile) ===================== */
+const burger=document.getElementById('burger'), nav=document.getElementById('navlinks');
+burger.addEventListener('click',()=>{
+  const open=nav.classList.toggle('open');
+  burger.setAttribute('aria-expanded',open);
+});
+nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+
+/* ===================== REVEAL ===================== */
+const io=new IntersectionObserver((es)=>{
+  es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ===================== YEAR ===================== */
+document.getElementById('yr').textContent=new Date().getFullYear();
+
+/* ===================== HERO EMBEDDING (viridis latent scatter) ===================== */
+(function(){
+  const c=document.getElementById('embed'), ctx=c.getContext('2d');
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const VIR=['#440154','#414487','#2A788E','#22A884','#7AD151','#FDE725'];
+  let W,H,DPR,pts=[],clusters=[];
+
+  function build(){
+    DPR=Math.min(window.devicePixelRatio||1,2);
+    const r=c.parentElement.getBoundingClientRect();
+    W=r.width; H=r.height;
+    c.width=W*DPR; c.height=H*DPR; ctx.setTransform(DPR,0,0,DPR,0,0);
+    // clusters biased to the right so text stays clear on the left
+    const K=6, cs=[];
+    for(let k=0;k<K;k++){
+      cs.push({ x:W*(0.42+Math.random()*0.55), y:H*(0.12+Math.random()*0.78),
+                col:VIR[k%VIR.length], spread:38+Math.random()*46, ph:Math.random()*6.28 });
+    }
+    clusters=cs;
+    const N=Math.round(Math.min(230, W*0.16));
+    pts=[];
+    for(let i=0;i<N;i++){
+      const k=cs[i%K];
+      const a=Math.random()*6.28, rad=Math.pow(Math.random(),0.7)*k.spread;
+      pts.push({ k, bx:k.x+Math.cos(a)*rad, by:k.y+Math.sin(a)*rad,
+                 r:1.1+Math.random()*2.2, sp:0.4+Math.random()*0.9,
+                 ph:Math.random()*6.28, drift:6+Math.random()*10 });
+    }
+  }
+  function frame(t){
+    ctx.clearRect(0,0,W,H);
+    const tt=t*0.00016;
+    for(const p of pts){
+      const dx=Math.cos(tt*p.sp+p.ph)*p.drift;
+      const dy=Math.sin(tt*p.sp*0.9+p.ph*1.3)*p.drift;
+      const x=p.bx+dx, y=p.by+dy;
+      ctx.beginPath();
+      ctx.arc(x,y,p.r,0,6.2832);
+      ctx.fillStyle=p.k.col;
+      ctx.globalAlpha=0.55;
+      ctx.fill();
+      // soft halo
+      ctx.globalAlpha=0.10;
+      ctx.beginPath(); ctx.arc(x,y,p.r*3.1,0,6.2832); ctx.fill();
+    }
+    ctx.globalAlpha=1;
+    if(!reduce) raf=requestAnimationFrame(frame);
+  }
+  let raf;
+  function start(){ build(); cancelAnimationFrame(raf); if(reduce){ frame(0); } else { raf=requestAnimationFrame(frame); } }
+  let rz; window.addEventListener('resize',()=>{ clearTimeout(rz); rz=setTimeout(start,180); });
+  start();
+})();
+</script>
+</body>
+</html>
