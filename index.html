@@ -197,6 +197,9 @@
     padding:4px 9px;border-radius:20px;white-space:nowrap;align-self:start;margin-top:2px}
   .badge.journal{background:var(--accent-wash);color:var(--accent-ink);border:1px solid #C7E4DF}
   .badge.preprint{background:#F1EEF7;color:#5A4B84;border:1px solid #E1D9F0}
+  .badge.manuscript{background:#F3F1EA;color:#7A6A3F;border:1px solid #E6DFC9}
+  .pub-foot{padding:18px 8px 0;font-family:"IBM Plex Mono";font-size:12px;color:var(--faint)}
+  .pub-foot sup{color:var(--accent)}
   .pub-empty{padding:44px 8px;color:var(--faint);font-family:"IBM Plex Mono";font-size:14px}
 
   /* ---------- skills ---------- */
@@ -482,7 +485,7 @@
       <div class="filters" role="tablist">
         <button class="on" data-f="all">All <span class="n" id="n-all"></span></button>
         <button data-f="journal">Journal <span class="n" id="n-journal"></span></button>
-        <button data-f="preprint">Preprint <span class="n" id="n-preprint"></span></button>
+        <button data-f="preprint">Preprint / MS <span class="n" id="n-preprint"></span></button>
       </div>
       <div class="search">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
@@ -621,50 +624,55 @@
 <script>
 /* ===================== PUBLICATIONS DATA ===================== */
 const PUBS = [
-  { type:"preprint", year:2026,
-    title:"Cross-species aging knowledge integration into an agentic AI platform uncovers conserved mechanisms",
-    authors:"G. Ahuja, A. Sharma, A. Singh, S. Kedia, A. Sharma, V. Gautam, P. Sharma, A. Khandelwal, S. Ramakrishna, R. Muddashetty, et al.",
-    venue:"Preprint", meta:"IIIT-Delhi · 2026" },
-
-  { type:"journal", year:2025,
-    title:"Discovering geroprotectors through the explainable artificial intelligence-based platform AgeXtend",
-    authors:"S. Arora, A. Mittal, <b>S. Duari</b>, S. Chauhan, N. K. Dixit, S. K. Mohanty, A. Sharma, S. Solanki, A. K. Sharma, V. Gautam, et al.",
-    venue:"Nature Aging", meta:"5(1):144–161 · 2025" },
-
-  { type:"journal", year:2025, co:true,
-    title:"scCamAge: A context-aware prediction engine for cellular age, aging-associated bioactivities, and morphometrics",
-    authors:"V. Gautam, <b>S. Duari</b>, S. Solanki, M. Gupta, A. Mittal, S. Arora, A. Aggarwal, A. K. Sharma, S. Tyagi, R. K. Pankajbhai, et al.",
-    venue:"Cell Reports", meta:"44(2):115270 · 2025" },
-
-  { type:"journal", year:2025,
-    title:"Deep learning reveals endogenous sterols as allosteric modulators of the GPCR–Gα interface",
-    authors:"S. K. Mohanty, A. Mittal, N. Farooqi, A. Gaur, <b>S. Duari</b>, S. Solanki, A. K. Sharma, S. Arora, S. Kumar, V. Gautam, et al.",
-    venue:"eLife", meta:"14:RP106397 · 2025" },
-
-  { type:"journal", year:2025,
+  { type:"journal", badge:"Journal", co:true, year:2025,
     title:"Protocol for cellular age prediction in yeast and human single cells using transfer learning",
-    authors:"<b>S. Duari</b>, V. Gautam, G. Ahuja",
-    venue:"STAR Protocols", meta:"6(3) · 2025" },
+    authors:"<b>S. Duari</b><sup>†</sup>, V. Gautam<sup>†</sup>, G. Ahuja",
+    venue:"STAR Protocols", meta:"2025" },
 
-  { type:"preprint", year:2025,
+  { type:"journal", badge:"Journal", co:true, year:2025,
+    title:"scCamAge: A context-aware prediction engine for cellular age, aging-associated bioactivities, and morphometrics",
+    authors:"V. Gautam<sup>†</sup>, <b>S. Duari</b><sup>†</sup>, S. Solanki, M. Gupta, A. Mittal, S. Arora, et al.",
+    venue:"Cell Reports", meta:"2025" },
+
+  { type:"journal", badge:"Journal", year:2025,
+    title:"Discovering geroprotectors through the explainable artificial intelligence-based platform AgeXtend",
+    authors:"S. Arora<sup>†</sup>, A. Mittal<sup>†</sup>, <b>S. Duari</b>, S. Chauhan, N. K. Dixit, S. K. Mohanty, et al.",
+    venue:"Nature Aging", meta:"2025" },
+
+  { type:"journal", badge:"Journal", year:2025,
+    title:"Deep learning reveals endogenous sterols as allosteric modulators of the GPCR–Gα interface",
+    authors:"S. K. Mohanty<sup>†</sup>, A. Mittal<sup>†</sup>, N. Farooqi, A. Gaur, <b>S. Duari</b>, S. Solanki, et al.",
+    venue:"eLife", meta:"2025" },
+
+  { type:"journal", badge:"Journal", year:2026,
     title:"Chemical Dice Integrator (CDI): A scalable framework for multimodal molecular representation learning",
-    authors:"S. Kumar, S. Solanki, M. Gupta, S. K. Mohanty, S. Satija, S. Chauhan, <b>S. Duari</b>, A. Sharma, V. Gautam, S. Arora, et al.",
-    venue:"bioRxiv", meta:"2025" },
+    authors:"S. Kumar, S. Solanki, M. Gupta, S. K. Mohanty, S. Satija, S. Chauhan, <b>S. Duari</b>, et al.",
+    venue:"Nature Communications", meta:"2026" },
 
-  { type:"preprint", year:2025,
-    title:"Generative AI framework SynGlue for the rational design of clinically relevant protein degraders",
-    authors:"S. Solanki, S. K. Mohanty, S. Satija, S. Chauhan, N. V. M. R. Bandaru, S. Dukare, N. K. Tiwari, R. N. Kumar, A. B. Aravind, S. Mukherjee, et al.",
-    venue:"bioRxiv", meta:"2025" },
-
-  { type:"preprint", year:2025,
+  { type:"journal", badge:"Journal", year:2026,
     title:"MutAIverse: An AI-powered, mechanism-backed platform for discovering novel DNA adducts and their precursor genotoxins",
-    authors:"S. Satija, S. K. Mohanty, S. Jorvekar, A. Verma, S. Solanki, V. Gautam, S. Arora, A. Mittal, A. Sharma, S. Chauhan, et al.",
-    venue:"bioRxiv", meta:"2025" },
+    authors:"S. Satija, S. K. Mohanty, S. Jorvekar, A. Verma, S. Solanki, … <b>S. Duari</b> … G. Ahuja",
+    venue:"Journal of Cheminformatics", meta:"2026" },
 
-  { type:"journal", year:2023,
+  { type:"journal", badge:"Journal", year:2023,
     title:"Dissecting the contributions of membrane affinity and bivalency of the spider venom protein DkTx to its sustained mode of TRPV1 activation",
     authors:"Y. Singh, D. Sarkar, <b>S. Duari</b>, S. G., P. K. I. Guru, H. M. V., D. Singh, S. Bhardwaj, J. Kalia",
-    venue:"Journal of Biological Chemistry", meta:"299(7):104903 · 2023" }
+    venue:"Journal of Biological Chemistry", meta:"2023" },
+
+  { type:"preprint", badge:"Preprint", year:2025,
+    title:"Generative AI framework SynGlue for the rational design of clinically relevant protein degraders",
+    authors:"S. Solanki, S. K. Mohanty, S. Satija, S. Chauhan, … <b>S. Duari</b> … G. Ahuja",
+    venue:"bioRxiv", meta:"2025" },
+
+  { type:"preprint", badge:"Manuscript", year:2026,
+    title:"Cross-species aging knowledge integration into an agentic AI platform uncovers conserved mechanisms",
+    authors:"G. Ahuja, A. Sharma, A. Singh, S. Kedia, … <b>S. Duari</b> … D. Sengupta",
+    venue:"Manuscript", meta:"2026" },
+
+  { type:"preprint", badge:"Manuscript", year:2026,
+    title:"Liquid biopsy via calorimetric fingerprinting of plasma with inert probes for non-invasive cancer stratification",
+    authors:"S. Chauhan<sup>†</sup>, S. Satija<sup>†</sup>, S. Solanki<sup>†</sup>, <b>S. Duari</b>, V. Gautam, I. Rakheja, et al.",
+    venue:"Manuscript", meta:"in preparation" }
 ];
 
 /* ===================== RENDER + FILTER ===================== */
@@ -693,8 +701,8 @@ function render(){
           ${p.co?'<span class="co">◦ co-first author</span>':''}
         </div>
       </div>
-      <span class="badge ${p.type}">${p.type}</span>
-    </article>`).join('');
+      <span class="badge ${p.badge.toLowerCase()}">${p.badge}</span>
+    </article>`).join('') + '<div class="pub-foot"><sup>†</sup> Equal contribution</div>';
 }
 
 /* counts */
